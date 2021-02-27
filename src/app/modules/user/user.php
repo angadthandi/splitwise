@@ -5,17 +5,17 @@ class User {
     private int $id;
     private string $name;
     private float $totalExpense;
-    private array $mapUserToExpense; // [User] => Expense
+    private array $mapUserIDToExpense; // [UserID] => Expense
 
     private static int $idIncrementor = 0;
 
-    public function __construct() {
+    public function __construct(string $name) {
         static::$idIncrementor++;
 
         $this->id = static::$idIncrementor;
         $this->name = $name;
         $this->totalExpense = 0.00;
-        $this->mapUserToExpense = [];
+        $this->mapUserIDToExpense = [];
     }
 
     public function getID(): int {
@@ -31,7 +31,7 @@ class User {
     }
 
     public function getMapUserExpense(): array {
-        return $this->mapUserToExpense;
+        return $this->mapUserIDToExpense;
     }
 
     public function addToMapUserExpense(User $user, float $expense): void {
@@ -39,11 +39,15 @@ class User {
             return;
         }
 
-        if (!array_key_exists($user, $this->mapUserToExpense)) {
-            $this->mapUserToExpense[$user] = 0.00;
+        $this->totalExpense += $expense;
+
+        $key = $user->getID();
+
+        if (!array_key_exists($key, $this->mapUserIDToExpense)) {
+            $this->mapUserIDToExpense[$key] = 0.00;
         }
 
-        $this->mapUserToExpense[$user] += $expense;
+        $this->mapUserIDToExpense[$key] += $expense;
     }
 
     public function printTotalBalance(): void {

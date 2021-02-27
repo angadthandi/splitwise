@@ -10,7 +10,8 @@ class Splitwise {
     private array $mapUserIDToUser; // [UserID] => User
 
     public function __construct() {
-        
+        $this->users = [];
+        $this->mapUserIDToUser = [];
     }
 
     public function registerUser(User $newUser): void {
@@ -71,12 +72,12 @@ class Splitwise {
                     $this->mapUserIDToUser[
                         $creditor->getID()
                     ]->addToMapUserExpense(
-                        $defaulter[$i],
+                        $defaulters[$i],
                         (-1) * $amtPerHead[$i]
                     );
 
                     $this->mapUserIDToUser[
-                        $defaulter[$i]->getID()
+                        $defaulters[$i]->getID()
                     ]->addToMapUserExpense(
                         $creditor,
                         $amtPerHead[$i]
